@@ -1,74 +1,103 @@
-# Network-101-Notes
-In this project we will get how to networks work.
+# 🧠 Network-101 Notes  
+_In this project, we will learn how networks work in a simple and visual way._
 
-Mostly modems act like a switch.
-A switch connects with other network devices. Connected switch communicates by mac adresses. If you want to send a data to WAN, firstly you need to send data to switch's mac adress. This is not have to just WAN. If you want to also send a data to any computer which connected a LAN network.
-Soooo, If you send a request to connect a site, firstly the computer must connects with modem -acts like a switch-.
+---
 
-HOW TO CONNECT A MODEM OR OTHER NETWORK DEVICES?
-Every network device has a NIC (Network Interface Card), and this NIC has a unique MAC address. When a device wants to communicate over a network, it uses this MAC address at the Data Link Layer (Layer 2) of the OSI model. Some special programs are able to change MAC address. That is not our subject you can find my special MAC address changer, if you click here.
+## 🔌 Basic Network Devices Overview
 
-What Does Communication Happen?
+| Device  | Purpose                                    | Works With   |
+|---------|--------------------------------------------|--------------|
+| **Switch** | Connects local devices (LAN)             | MAC Addresses|
+| **Router** | Connects different networks (LAN↔WAN)    | IP Addresses |
+| **Modem** | Connects to ISP (Internet Provider)       | Converts digital ↔ analog |
 
-Your computer wants to send data to another device or to the internet.
+---
 
-It first checks whether the destination IP is in the same network (LAN).
+## 🔁 How Local Communication Works (LAN)
 
-If it is:
+![Switch LAN Diagram](https://upload.wikimedia.org/wikipedia/commons/3/36/Switch_network_diagram.svg)
 
-  It uses ARP (Address Resolution Protocol) to find the MAC address of the target IP.
+- A **switch** connects all devices in a **LAN (Local Area Network)**.
+- Devices in the LAN communicate using **MAC addresses**.
+- The switch uses a **MAC address table** to deliver packets only to the correct device.
 
-  Then, it sends the data to that MAC address.
+> 🧠 **Example:**  
+> Your computer wants to send a file to another PC on the same LAN.  
+> It checks if that IP is in the same subnet → uses **ARP** to find MAC → sends data directly.
 
-If it’s not in the same LAN (e.g., you're visiting google.com):
+---
 
-  The computer sends the packet to the default gateway, which is usually the modem/router.
+## 🌍 How Internet Communication Works (WAN)
 
-  The gateway then forwards the packet to the internet. Actually forwards the packet to the ISP. ISP is Internet Service Provider, that connects your modem with internet.
+![Router Internet Diagram](https://upload.wikimedia.org/wikipedia/commons/5/58/Router.svg)
 
-How ARP works?
+1. If the destination IP (like `142.250.190.78`) is not in the LAN,
+2. The computer sends the packet to the **default gateway** (router).
+3. The router checks its **routing table** and forwards the packet to the **ISP**.
+4. The ISP sends it to the destination on the internet.
 
-You know the IP of the target, but you need the MAC to actually send the frame.
+---
 
-The computer broadcasts an ARP request:
-  “Who has IP 192.168.1.1? Tell me your MAC address!”
+## 🧰 How ARP Works
 
-The device with that IP replies with its MAC. Then devicese writes MAC-IP couple to ARP table.
+**ARP** = Address Resolution Protocol  
+Used to map an IP address to a MAC address inside the LAN.
 
-Once the MAC address is known, data is packed and sent from your NIC to the target NIC over Ethernet (or Wi-Fi), using the MAC address.
+📣 **ARP Request:**
 
-WHAT HAPPENS IN A SWITCH?
+> "Who has IP `192.168.1.1`? Tell me your MAC address!"
 
-A switch is like a smart postman inside the LAN.
+🖥️ **ARP Reply:**  
+The device with that IP replies:  
+> "Here’s my MAC: `00:1A:2B:3C:4D:5E`"
 
-  It keeps a table (MAC address table) that remembers which MAC address is connected to which port.
+That MAC-IP pair is stored in the **ARP table**.
 
-  When a packet arrives, the switch checks the destination MAC and sends it only to the correct device, not everyone (unlike a hub).
+---
 
-What Is a Router?
+## 🖧 What Is a Router?
 
-A router is a network device that connects multiple networks together — typically:
+![Router Role](https://upload.wikimedia.org/wikipedia/commons/6/66/Internet_Connectivity_with_Router.png)
 
-  Your Local Area Network (LAN) (home/office devices)
+A **router** connects different networks.  
+Usually your LAN ↔ WAN (Internet).
 
-  The Wide Area Network (WAN) (like the internet)
+### Main Functions of a Router:
 
-Think of a router as a traffic director for data — it figures out where packets should go, especially between networks.
+#### 1. Routes Packets Between Networks  
+Routes traffic from your private network to the internet.
 
-1. Routes Packets Between Networks
-  If your computer wants to talk to a server on the internet (e.g. 142.250.190.78), it can’t directly reach it.
-  Your computer sends the data to the router (default gateway).
-  The router checks its routing table and forwards the packet to the internet (via modem or ISP).
+#### 2. NAT (Network Address Translation)  
+Translates **private IPs** (like `192.168.1.10`) into your **public IP**.
 
-2. NAT (Network Address Translation)
-  Your internal devices often have private IPs (like 192.168.1.5).
-  The router uses NAT to translate your private IP to a public IP so you can access the internet.
-  When the reply comes back, the router remembers who asked and sends it to the right internal device.
+#### 3. DHCP (Dynamic Host Configuration Protocol)  
+Automatically gives IP addresses to devices in the LAN.
 
-3. DHCP (Dynamic Host Configuration Protocol)
-Routers often assign IP addresses automatically to devices in the LAN via DHCP.
-Example: You connect to Wi-Fi, and the router gives your laptop an IP like 192.168.1.7.
+#### 4. Firewall (Optional)  
+Blocks or filters unwanted traffic from outside.
 
-4. Firewall (Optional)
-Many routers include a built-in firewall to block unwanted traffic from entering your LAN.
+---
 
+## 🧩 Summary Diagram
+
+```plaintext
+ [Your Device]
+       ↓ MAC
+    [Switch]
+       ↓ IP
+    [Router]  ← DHCP, NAT, Firewall
+       ↓ IP
+    [ISP]  ← Internet
+```
+
+📚 Conclusion
+
+In this project, we’ve covered the basics of how different network devices interact:
+
+Switches use MAC addresses to forward data within a local network.
+
+Routers manage communication between networks and also handle NAT, DHCP, and firewall duties.
+
+ARP is essential for discovering the MAC address of a target IP in a local network.
+
+By understanding these fundamental devices and protocols, you can better grasp how modern networking works!
